@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/bash
 [ $# -lt 3 -a "$1" != env ] && { cat <<'####'; exit 99; }
 
 ####  UNIX Script Documentation Block
@@ -1685,7 +1685,7 @@ NODE=`expr $NODE + 1`
 #  -------------------------------------------------------
  
 cat<<EOFthread>$thread
-#!/bin/ksh
+#!/bin/bash
 set -e
 [ $LOUD = on ] && set -x
  
