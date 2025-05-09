@@ -895,8 +895,7 @@ fi
 #.......................................................................
 
 errt=0
-typeset -Z2 chr
-chr=`expr $icendat % 100`     # use center date w/ fractional hours removed
+chr=$(printf "%02d" $(expr $icendat % 100))     # use center date w/ fractional hours removed
 
 # Note: The following subtypes are EXPECTED to OFTEN be missing regardless
 #       of the center dump time or the data dump network - if only these types
@@ -2131,8 +2130,7 @@ cat << EOFdat2 > datefile
       $cendat
 EOFdat2
 
-               typeset -Z2 dumhr
-               dumhr=`expr $icendat % 100`
+	       dumhr=$(printf "%02d" $(expr $icendat % 100))
                echo $dumhr > coloc.parm
 
                cat datefile
