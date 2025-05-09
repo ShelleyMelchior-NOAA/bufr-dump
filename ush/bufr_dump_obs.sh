@@ -3333,8 +3333,11 @@ EOFs6
 
 fi
 
-if [ "$JOB_NUMBER" -ne 2 -a -s ${COMSP}status${JOB_NUMBER}.${tmmark}.bufr_d -a \
-     -f ${COMSP}aircar.${tmmark}.bufr_d ]; then
+#if [ "$JOB_NUMBER" -ne 2 -a -s ${COMSP}status${JOB_NUMBER}.${tmmark}.bufr_d -a \
+#     -f ${COMSP}aircar.${tmmark}.bufr_d ]; then
+if [ "$JOB_NUMBER" -ne 2 ] && \
+   [ -s ${COMSP}status${JOB_NUMBER}.${tmmark}.bufr_d ] && \
+   [ -f ${COMSP}aircar.${tmmark}.bufr_d ]; then
 
 # Compare AFWA ACARS vs. ARINC ACARS report counts in AIRCAR dump and generate
 #  a flag file (*aircar_status_flag*) in $COMSP path indicating which type
