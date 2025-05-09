@@ -2190,7 +2190,7 @@ NOT PERFORMED (turned off by user)"
 
 fi # DUPC && DUPC_TAC == on
 
- [ "$LOUD" -ne "on" ] && set +x
+ [ "$LOUD" != "on" ] && set +x
  } >>$DATA/$NAME.out 2>&1
 
 if [ $dupair_run = yes ]; then
