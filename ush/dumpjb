@@ -1372,8 +1372,7 @@ eval DTIM_latest=\$DTIM_latest_${NAME}
 #  Otherwise, loop will process each subtype serially.
 #------------------------------------------------------------------------------
  
-typeset -Z2 pos
-pos=00
+pos=$(printf "%02d" 00)
 for mtst in $MTST
 do
 
