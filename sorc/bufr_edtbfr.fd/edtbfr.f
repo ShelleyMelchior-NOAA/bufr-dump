@@ -253,7 +253,8 @@ C
 C 2021-09-02  D. STOKES -- COMMENTED SYSTEM CALLS OF POSTMSG TO JLOGFILE
 C 2022-08-15  I. GENKOVA -- INCREASED MEDT=5000 TO ALLOW 5000 STATIONS
 C                OF ONE TYPE IN SDMEDIT FILE      
-C
+C 2025-01-08  D. STOKES, I. GENKOVA - add missing entries in CTYPE DATA
+C                statement (256* for 003.sss).
 C USAGE
 C   INPUT FILES:
 C     UNIT 05  - STANDARD INPUT - FIRST RECORD CONTAINS TIME-WINDOWING
@@ -780,6 +781,7 @@ C$$$
      .           'DROPWINSONDE (FROM BUFR)                ', ! 002.104
      .           'PIBAL (FROM BUFR)                       ', ! 002.105
      .       150*'                                        ',
+     .       256*'                                        ',
      .         1*'                                        ',
      .           'MANUAL AIREP FORMAT AIRCRAFT            ', ! 004.001
      .           'MANUAL PIREP FORMAT AIRCRAFT            ', ! 004.002

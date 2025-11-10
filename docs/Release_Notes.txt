@@ -1,5 +1,95 @@
+bufr-dump v1.3.0        RELEASED        OCT 04,2024
+          v1.3.0        IMPLEMENTED     AUG 11,2025 (tbc)
+
+PRELUDE
+ This update (obsproc v1.2.6, bufr-dump v1.3.0, prepobs v1.1.2) 
+ introduces the following new dump files configuration:
+  sfcsno - snow from synoptic tanks messages containing snow info
+  snomad - snow from with MADIS msonet tank containing snow info
+  sofarw - marine wave SOFAR observations
+  gsbpfl - global sounding balloon profiles
+
+FILE CHANGES
+ M docs/Release_Notes.txt
+ M fix/bufr_dumplist
+ M sorc/bufr_dupupr.fd/dupupr.f
+ A sorc/bufr_dupsno.fd (dupsno.f, CMakeLists.txt)
+ M sorc/bufr_edtbfr.fd/edtbfr.f
+ M sorc/bufr_geofil.fd/geofil.f
+ M sorc/CMakeLists.txt
+ M ush/dumpjb
+ M ush/bufr_dump_obs.sh
+ M versions/VERSION
+ (M-modified; A-added; D-deleted)
+
+DOCS CHANGES
+ docs/Release_Notes.txt
+ Updated for this release.
+
+FIX CHANGES
+ fix/bufr_dumplist
+  Introduce new dump files configuration:
+  sfcsno - snow from synoptic tanks messages containing snow info
+  snomad - snow from with MADIS msonet tank containing snow info
+  sofarw - marine wave SOFAR observations
+  gsbpfl - global sounding balloon profiles
+  Cleaned up bufr_dumplist following SPA suggestions 
+  255030 was added back to _msonet (for non-obsproc applications using fix/bufr_dumplist)
+  new groups _msone0 were added to fix/bufr_dumplist for obsproc processing
+
+SOURCE CHANGES
+ sorc/bufr_dupsno.fd/dupsno.f
+ Introduce new duplicate check prioritizing snow-containing messages from the synop tanks
+
+ sorc/bufr_dupupr.fd/dupupr.f
+ Added gracious exit if no subsets/records are found
+
+ sorc/bufr_edtbfr.fd/edtbfr.f
+ Added missing entry in CTYPE initialization
+
+ sorc/bufr_geofil.fd/geofil.f
+ Increase MAXOUT to secure successful domain selection
+
+ sorc/CMakeLists.txt
+ Added bufr_dupsno.fd for sfcsno dup check
+
+USH
+ ush/bufr_dump_obs.sh
+ addition of sfcsno; adpsfc and sfcsno use the same tanks, thus skip sfcsno counts to prevent double counts
+ addition of msone0 and msone1 (replacing msonet), sofarw, sfcsno, gsbpfl to RSTPROD logic
+ use cpfs instead of cp when sending dump file to comout
+
+ ush/dumpjb
+ addition of dup check (SNOX) for sfcsno, see sorc/bufr_dupsno.fd/dupsno.f
+ 
+VERSIONS CHANGES
+ version/VERSION
+ Updated to this release's version
+
+PRE-IMPLEMENTATION TESTING REQUIREMENTS
+ obsproc v1.2.6 needs modules bufr-dump v1.3.0 and prepobs v1.1.2 in order to run properly
+ See docs/README.md for build instructions
+ See versions/build.ver and versions/run.ver for libaries
+
+ Run jobs/JOBSPROC_networkname_DUMP and jobs/JOBSPROC_networkname_DUMP_POST
+ for the following networkname values: GLOBAL, NAM, RAP, URMA, RTMA, CDAS
+
+DISSEMINATION INFORMATION
+ No changes to dissemination on WCOSS2
+
+SPECIAL INSTRUCTIONS
+ Make sure that the following binary fix files (from the old VLab repo) are downloaded:
+    nam_expdomain_halfdeg_imask.gbl
+    nam_expdomain_guam_halfdeg_imask.gbl
+    wave_landchxh
+ These files are currently hosted on the EMC FTP server at:
+ https://ftp.emc.ncep.noaa.gov/static_files/public/obsproc/bufr-dump-fix-HASH.tgz
+ They can be downloaded manually and into the cloned
+ repository by executing: ./ush/download_fix.sh
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 bufr-dump v1.2.1        RELEASED        JUN 26,2024
-          v1.2.1        IMPLEMENTED     JUL 03,2024
+          v1.2.1        IMPLEMENTED     SEP 05,2024
 
 PRELUDE
  This update will continue to support obsproc.v1.2.0 and prepobs.v1.1.0 releases (it won't work with earlier obsproc and prepbufr versions!)
@@ -33,7 +123,7 @@ VERSIONS CHANGES
 
 CHANGES TO OUTPUT AND FILE SIZES
  Update dumps:
- *msonet* - add subset NC255034, size is not impacted noticeably b/c of recent decoders updates which reduced the size of tanks 255/003,004,030 and *msonet* dumps. 
+ *msonet* - add subset NC255034, size is not impacted noticeably b/c of recent decoders updates which reduced the size of tanks 255/003,004,030 and *msonet* dumps.
  *gpsro*  - add the EUMETSAT SPIRE data w.out duplicates
 
 PRE-IMPLEMENTATION TESTING REQUIREMENTS
@@ -43,19 +133,14 @@ PRE-IMPLEMENTATION TESTING REQUIREMENTS
 
  Run jobs/JOBSPROC_networkname_DUMP and jobs/JOBSPROC_networkname_DUMP_POST
  for the following networkname values: GLOBAL, NAM, RAP, URMA, RTMA, CDAS
- 
+
  Diference in file size should be seen only for the *msonet* and *gpsro* bufr dumps.
 
 DISSEMINATION INFORMATION
  No changes to dissemination on WCOSS2
 
 SPECIAL INSTRUCTIONS
- 1)Update the DF-related parsing.tbl and pqact.conf
- at the same time or shortly after this bufr-dump v1.2.1 is set as Default module version
- Instructions:
- https://docs.google.com/document/d/1nuqUG-t7w0s2qXXAPyK9V559Xm1tR72d/edit
-
- 2)Make sure that the following binary fix files (from the old VLab repo) are downloaded:
+ Make sure that the following binary fix files (from the old VLab repo) are downloaded:
     nam_expdomain_halfdeg_imask.gbl
     nam_expdomain_guam_halfdeg_imask.gbl
     wave_landchxh

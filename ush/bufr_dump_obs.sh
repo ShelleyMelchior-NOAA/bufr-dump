@@ -1561,13 +1561,14 @@ do
       errmvl=$errmv
       errmv=`expr $errmvl + $errmvt`
    else
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}${n}.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}${n}.${tmmark}.bufr_d
    fi
 
    if [ "$CHGRP_RSTPROD" = 'YES' ]; then
       if [ $n = adpsfc -o $n = aircar -o $n = aircft -o $n = msonet -o \
            $n = sfcshp -o $n = lghtng -o $n = gpsipw -o $n = saphir -o \
-           $n = gpsro ]; then
+           $n = gpsro  -o $n = sofarw -o $n = msone0 -o $n = msone1 -o \
+	   $n = sfcsno -o $n = gsbpfl ]; then
          chgrp rstprod ${COMSP}${n}.${tmmark}.bufr_d
          errch=$?
          if [ $errch -eq 0 ]; then
@@ -1582,7 +1583,7 @@ rstprod group have read permission"
             echo " " >> outout
             echo " " >> status1.out
          else
-            cp /dev/null ${COMSP}${n}.${tmmark}.bufr_d
+            cpfs /dev/null ${COMSP}${n}.${tmmark}.bufr_d
             msg="**WARNING: $n dump contains RESTRICTED data, since user \
 $USER is not in rstprod group a null file is copied in its place"
             set +u
@@ -1735,7 +1736,7 @@ msg1=NO
 for nnn
 do
    [ "$nnn" = $ssmif -a "$SENDCOM" != 'NO' ]  &&  \
-    cp /dev/null ${COMSP}spssmi.${tmmark}.bufr_d
+    cpfs /dev/null ${COMSP}spssmi.${tmmark}.bufr_d
    if [ "$nnn" = $ssmif -a "$prepssmi" = 'YES' ];then
 
       set +x
@@ -1776,7 +1777,7 @@ do
          if [ "$PREPSSMI_PROD_TYPE" = 'COMBINATION' ];then
             ssmiOU_save=$ssmiOU
             ssmiOU=$ssmiOU_save.$ssmif
-            cp /dev/null $ssmiOU
+            cpfs /dev/null $ssmiOU
          fi
 
          DATA_save=$DATA
@@ -1810,7 +1811,7 @@ do
          [ -s msg1_file ]  && msg1="`cat msg1_file` from input $ssmif dump"
          [ -s msg2_file ]  && msg2="`cat msg2_file` from input $ssmif dump"
 
-         cp ssmi.bufr  $ssmiOU
+         cpfs ssmi.bufr  $ssmiOU
          errmvt=$?
          errmvl=$errmv
          errmv=`expr $errmvl + $errmvt`
@@ -1945,7 +1946,7 @@ generated"
    fi
    rm $ssmiOU_save.ssmipn $ssmiOU_save.ssmip
    if [ $err -eq 0 ];then
-      cp combfr.spssmi $ssmiOU_save
+      cpfs combfr.spssmi $ssmiOU_save
       if [ -s ssmi_count ];then
          n1=`head -n1 ssmi_count`
          n2=`tail -n1 ssmi_count`
@@ -1987,7 +1988,7 @@ do
       msg1=NO
       msg2="**NO ERS SCATTEROMETER DATA reprocessed due to above PGM FAIL \
 --> non-fatal"
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}erscat.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}erscat.${tmmark}.bufr_d
 
       if [ "$prepersd" = 'YES' ];then
 
@@ -2257,7 +2258,7 @@ echo "------------------------------------------------------------"
 WAVE_DATASORT  all completed normally"
 
 ########################cp ers2.so ${COMSP}ers2.sort
-                        cp erscat_bufr $ersOU
+                        cpfs erscat_bufr $ersOU
                         errcpy=$?
                         if [ "$errcpy" -eq '0' ];then
 msg2="ERS scatterometer data reprocessed successfully into NCEP BUFR file"
@@ -2338,7 +2339,7 @@ do
       msg2="**NO QUIKSCAT SCATTEROMETER DATA reprocessed (from input \
 qkscat dump) due to above PGM FAIL --> non-fatal"
 
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}qkswnd.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}qkswnd.${tmmark}.bufr_d
 
       if [ "$prepqksd" = 'YES' ];then
 
@@ -2534,7 +2535,7 @@ do
       msg2="**NO ASCAT SCATTEROMETER DATA reprocessed (from input ascatt \
 dump) due to above PGM FAIL --> non-fatal"
 
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}ascatw.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}ascatw.${tmmark}.bufr_d
 
       if [ "$prepascd" = 'YES' ];then
 
@@ -2655,7 +2656,7 @@ echo "------------------------------------------------------------"
                msg1="program WAVE_DCODQUIKSCAT completed normally, ascatw \
 file generated from input ascatt dump"
 
-               cp ascatw_bufr $ascOU
+               cpfs ascatw_bufr $ascOU
                errcpy=$?
                msg2=NO
                [ "$errcpy" -ne '0' ] && msg2="**NO ASCAT SCATTEROMETER DATA \
@@ -2730,7 +2731,7 @@ do
       msg2="**NO TRMM TMI DATA reprocessed (from input trmm dump) due to \
 above PGM FAIL --> non-fatal"
 
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}sptrmm.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}sptrmm.${tmmark}.bufr_d
 
       if [ "$preptrmm" = 'YES' ];then
 
@@ -2837,7 +2838,7 @@ echo "------------------------------------------------------------"
                msg1="program BUFR_SUPERTMI completed normally, sptrmm file \
 generated from input trmm dump"
 
-               cp sptrmm_bufr $tmiOU
+               cpfs sptrmm_bufr $tmiOU
                errcpy=$?
                msg2=NO
                [ "$errcpy" -ne '0' ] && msg2="**NO TRMM TMI DATA reprocessed \
@@ -2912,7 +2913,7 @@ do
       msg2="**NO WINDSAT SCATTEROMETER DATA reprocessed (from input wndsat \
 dump) due to above PGM FAIL --> non-fatal"
 
-      [ "$SENDCOM" != 'NO' ] && cp /dev/null ${COMSP}wdsatr.${tmmark}.bufr_d
+      [ "$SENDCOM" != 'NO' ] && cpfs /dev/null ${COMSP}wdsatr.${tmmark}.bufr_d
 
       if [ "$prepwindsat" = 'YES' ];then
 
@@ -3024,7 +3025,7 @@ echo "------------------------------------------------------------"
                msg1="program BUFR_DCODWINDSAT completed normally, wdsatr file \
 generated from input wndsat dump"
 
-               cp wdsatr_bufr $wnsOU
+               cpfs wdsatr_bufr $wnsOU
                errcpy=$?
                msg2=NO
                [ "$errcpy" -ne '0' ] && msg2="**NO WINDSAT SCATTEROMETER \
@@ -3122,6 +3123,8 @@ EOFblank
       grep --text -e "in data group" temp1 | grep -v -e "Domain"
       err_grep=$?
       if [ $err_grep -ne 0 ]; then
+	 # adpsfc and sfcsno use same tanks, prevent double counts  
+	 sed --in-place '/sfcsno/d' temp1
          cat temp1 >> updated_counts.out
       else
          group=`cut -f5 -d" " temp1`
@@ -3162,9 +3165,13 @@ COUNT TO 9999999"
                cut -c67-  temp1 > cutRv.allout.temp1
                paste -d"\0" cutLv.allout.temp1 cutRv.allout.temp1 > temp1
             fi
+	    # adpsfc and sfcsno use same tanks, prevent double counts
+	    sed --in-place '/sfcsno/d' temp1
             cat temp1 >> updated_counts.out
          else
             sed "s/HAS......... REPORTS/HAS      0 REPORTS/g" temp1 > temp2
+	    # adpsfc and sfcsno use same tanks, prevent double counts
+	    sed --in-place '/sfcsno/d' temp2
             cat temp2 >> updated_counts.out
          fi
       fi
